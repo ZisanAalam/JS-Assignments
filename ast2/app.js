@@ -19,6 +19,7 @@ for (let i = 0; i < imgCount; i++) {
 
 let currentIndex = 0;
 let targetIndex = 0;
+let flag = true;
 
 //Initialization of Previous
 var prev = document.createElement("div");
@@ -28,6 +29,8 @@ carouselWrapper.appendChild(prev);
 
 //Attaching Click Event to Previous button
 prev.onclick = function() {
+    flag = false;
+    // clearInterval(auto_animate);
     if (currentIndex == 0) {
         targetIndex = imgCount - 1;
     }
@@ -39,6 +42,9 @@ prev.onclick = function() {
 
     animateTransition(currentIndex, targetIndex);
     currentIndex = targetIndex;
+    setTimeout(function() {
+        flag = true;
+    }, 1000);
 
 }
 
@@ -51,13 +57,23 @@ carouselWrapper.appendChild(next);
 
 //Attaching click event to Next Button
 next.onclick = function() {
-    targetIndex = currentIndex + 1;
-    if (targetIndex == imgCount) {
-        targetIndex = 0;
+    flag = false;
+    if (currentIndex == imgCount - 1 && targetIndex == 0) {
+        currentIndex = 0;
+        targetIndex = 0
+    } else {
+        targetIndex = currentIndex + 1;
+
+        if (targetIndex == imgCount) {
+            targetIndex = 0;
+        }
     }
 
     animateTransition(currentIndex, targetIndex);
     currentIndex = targetIndex;
+    setTimeout(function() {
+        flag = true;
+    }, 1000);
 
 }
 
@@ -71,10 +87,17 @@ for (let i = 0; i < imgCount; i++) {
     dot.setAttribute('class', 'dot');
     dot.innerHTML = ". &nbsp;";
     dot.onclick = function() {
+        flag = false;
         targetIndex = i;
         animateTransition(currentIndex, targetIndex);
         currentIndex = targetIndex;
+        setTimeout(function() {
+            flag = true;
+        }, 1000);
+
+
     }
+
     dotArr.push(dot);
     dotContainer.appendChild(dot);
 
@@ -92,6 +115,7 @@ var setCurrentDot = function(activeIndex) {
 
 // Transition animation
 let targetLetf;
+let currentLeft;
 let timer;
 let transitionTime;
 let transitionDelay;
@@ -99,6 +123,7 @@ let dx;
 
 function animateTransition(currentIndex, targetIndex) {
     setCurrentDot();
+    // console.log(currentIndex, targetIndex);
     dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
     currentLeft = currentIndex * imgWidth;
     targetLetf = targetIndex * imgWidth;
@@ -128,3 +153,37 @@ function animateTransition(currentIndex, targetIndex) {
 // transition properties
 
 ({ transitionTime, transitionDelay } = { transitionTime: 50, transitionDelay: 10 });
+
+
+auto_animate = setInterval(() => {
+    if (flag) {
+        targetIndex++;
+
+        if (targetIndex == imgCount) {
+            targetIndex = 0;
+        }
+
+        animateTransition(currentIndex, targetIndex);
+        currentIndex = targetIndex;
+    }
+    // targetIndex = targetIndex + 1;
+}, 3000);
+
+/*
+auto_animate = setInterval(() => {
+
+    slideShow();
+}, 1000);
+
+
+function slideShow() {
+    dotArr[0].setAttribute('class', 'dot active');
+    setCurrentDot();
+    dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
+    // console.log(currentIndex, targetIndex);
+    if (targetIndex === imgCount) { targetIndex = 0 };
+    carouselImages.style.left = `-${targetIndex*imgWidth}px`;
+    // carouselImages.style.left = `-${currentLeft+dx}px`;
+    currentIndex = targetIndex;
+    targetIndex++;
+}*/
