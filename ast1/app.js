@@ -28,10 +28,16 @@ carouselWrapper.appendChild(prev);
 
 //Attaching Click Event to Previous button
 prev.onclick = function() {
-    if (currentIndex == 0) currentIndex = imgCount;
+    if (currentIndex == 0) {
+        targetIndex = imgCount - 1;
+    }
     // currentIndex--;
-    targetIndex = currentIndex - 1;
-    animateTransition(targetIndex);
+    else {
+        targetIndex = currentIndex - 1;
+    }
+
+
+    animateTransition(currentIndex, targetIndex);
     currentIndex = targetIndex;
 
 }
@@ -50,7 +56,7 @@ next.onclick = function() {
         targetIndex = 0;
     }
 
-    animateTransition(targetIndex);
+    animateTransition(currentIndex, targetIndex);
     currentIndex = targetIndex;
 
 }
@@ -71,8 +77,11 @@ for (let i = 0; i < imgCount; i++) {
     dot.setAttribute('class', 'dot');
     dot.innerHTML = ". &nbsp;";
     dot.onclick = function() {
-        animateTransition(i);
+        targetIndex = i;
+        animateTransition(currentIndex, targetIndex);
+        currentIndex = targetIndex;
     }
+
 
 
     dotArr.push(dot);
@@ -82,28 +91,46 @@ for (let i = 0; i < imgCount; i++) {
 carouselWrapper.appendChild(dotContainer);
 
 
-let targetLetf;
-let dx = 0;
-let timer;
+
 
 var getStyle = function(element, style) {
     return parseFloat(window.getComputedStyle(element).getPropertyValue(style));
 };
 
-function animateTransition(index) {
-    // currentLeft = getStyle(carouselImages.children[index], 'left');
-    // console.log(currentLeft);
-    // targetLetf = index * imgWidth;
-    carouselImages.style.left = `-${index*imgWidth}px`;
-    // console.log(targetLetf);
-    // timer = setInterval(() => {
+let targetLetf;
+let timer;
+let transitionTime = 500;
+let dx = 10;
+// let dx = 10;
 
-    //     if (dx >= targetLetf + 1) {
-    //         clearInterval(timer);
-    //         dx = currentLeft;
-    //     }
-    //     carouselImages.style.left = `-${dx}px`;
-    //     dx += 10;
-    // }, 1);
+function animateTransition(currentIndex, targetIndex) {
+    // currentLeft = getStyle(carouselImages.children[currentIndex], 'left');
+    // dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
+    currentLeft = currentIndex * imgWidth;
+    console.log(currentLeft);
+    targetLetf = targetIndex * imgWidth;
+    console.log(currentIndex, currentLeft, targetIndex, targetLetf);
+    console.log('-----------------')
+        // carouselImages.style.left = `-${targetIndex*imgWidth}px`;
 
+    timer = setInterval(() => {
+
+        if (currentIndex < targetIndex || (currentIndex == 0 && targetIndex == imgCount)) {
+            if (currentLeft >= targetLetf) {
+                clearInterval(timer);
+            } else {
+                carouselImages.style.left = `-${currentLeft+dx}px`;
+                currentLeft += dx;
+            }
+        } else if (currentIndex > targetIndex) {
+            if (currentLeft <= targetLetf) {
+                clearInterval(timer);
+            } else {
+                carouselImages.style.left = `-${currentLeft-dx}px`;
+                currentLeft -= dx;
+            }
+        }
+
+
+    }, 1);
 }
