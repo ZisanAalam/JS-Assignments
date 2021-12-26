@@ -62,13 +62,7 @@ next.onclick = function() {
 }
 
 
-
-
-
-
-
 //Dot Navigation
-
 let dotContainer = document.createElement('div');
 dotContainer.setAttribute('class', 'dots');
 var dotArr = [];
@@ -81,37 +75,34 @@ for (let i = 0; i < imgCount; i++) {
         animateTransition(currentIndex, targetIndex);
         currentIndex = targetIndex;
     }
-
-
-
     dotArr.push(dot);
     dotContainer.appendChild(dot);
 
 }
 carouselWrapper.appendChild(dotContainer);
 
+// setting firt child active
+dotArr[0].setAttribute('class', 'dot active');
+var setCurrentDot = function(activeIndex) {
+    for (var dotIndex = 0; dotIndex < dotArr.length; dotIndex++) {
+        if (dotIndex === targetIndex) dotArr[dotIndex].setAttribute("class", "dot active");
+        else dotArr[dotIndex].setAttribute("class", "dot");
+    }
+}
 
-
-
-var getStyle = function(element, style) {
-    return parseFloat(window.getComputedStyle(element).getPropertyValue(style));
-};
-
+// Transition animation
 let targetLetf;
 let timer;
-let transitionTime = 500;
-let dx = 10;
-// let dx = 10;
+let transitionTime;
+let transitionDelay;
+let dx;
 
 function animateTransition(currentIndex, targetIndex) {
-    // currentLeft = getStyle(carouselImages.children[currentIndex], 'left');
-    // dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
+    setCurrentDot();
+    dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
     currentLeft = currentIndex * imgWidth;
-    console.log(currentLeft);
     targetLetf = targetIndex * imgWidth;
-    console.log(currentIndex, currentLeft, targetIndex, targetLetf);
-    console.log('-----------------')
-        // carouselImages.style.left = `-${targetIndex*imgWidth}px`;
+    // carouselImages.style.left = `-${targetIndex*imgWidth}px`;
 
     timer = setInterval(() => {
 
@@ -130,7 +121,10 @@ function animateTransition(currentIndex, targetIndex) {
                 currentLeft -= dx;
             }
         }
-
-
-    }, 1);
+    }, transitionDelay);
 }
+
+
+// transition properties
+
+({ transitionTime, transitionDelay } = { transitionTime: 50, transitionDelay: 10 });
