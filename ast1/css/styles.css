@@ -51,3 +51,26 @@ img {
 .prev:hover {
     background-color: #29a8e2;
 }
+
+.dots {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    font-size: 100px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+.dot {
+    opacity: 0.5;
+}
+
+.dot:hover {
+    opacity: 1;
+}
+
+.dot.active {
+    opacity: 1;
+}
