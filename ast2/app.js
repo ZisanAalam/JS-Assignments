@@ -123,7 +123,7 @@ let dx;
 
 function animateTransition(currentIndex, targetIndex) {
     setCurrentDot();
-    // console.log(currentIndex, targetIndex);
+    console.log(currentIndex, targetIndex);
     dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
     currentLeft = currentIndex * imgWidth;
     targetLetf = targetIndex * imgWidth;
@@ -157,14 +157,15 @@ function animateTransition(currentIndex, targetIndex) {
 
 auto_animate = setInterval(() => {
     if (flag) {
-        targetIndex++;
 
         if (targetIndex == imgCount) {
             targetIndex = 0;
         }
+        // targetIndex++;
 
         animateTransition(currentIndex, targetIndex);
         currentIndex = targetIndex;
+        targetIndex++
     }
     // targetIndex = targetIndex + 1;
 }, 3000);
