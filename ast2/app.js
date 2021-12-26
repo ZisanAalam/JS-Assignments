@@ -123,7 +123,7 @@ let dx;
 
 function animateTransition(currentIndex, targetIndex) {
     setCurrentDot();
-    console.log(currentIndex, targetIndex);
+    // console.log(currentIndex, targetIndex);
     dx = Math.abs((targetIndex - currentIndex) * imgWidth) / transitionTime;
     currentLeft = currentIndex * imgWidth;
     targetLetf = targetIndex * imgWidth;
