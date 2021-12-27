@@ -48,8 +48,8 @@ function Circle(x, y, radius, color, speed) {
     this.radius = radius;
     this.color = color;
     this.speed = speed;
-    this.dx = Math.random() - 0.5 * this.speed;
-    this.dy = Math.random() - 0.5 * this.speed;
+    this.dx = (Math.random() - 0.5) * this.speed;
+    this.dy = (Math.random() - 0.5) * this.speed;
     this.circle = null;
 
 
