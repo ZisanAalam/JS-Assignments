@@ -42,14 +42,14 @@ window.addEventListener('resize', () => {
 
 
 
-function Circle(x, y, radius, color) {
+function Circle(x, y, radius, color, speed) {
     this.x = x;
     this.y = y
     this.radius = radius;
     this.color = color;
-    this.speed = 5;
-    this.dx = Math.random() - 0.5;
-    this.dy = Math.random() - 0.5;
+    this.speed = speed;
+    this.dx = Math.random() - 0.5 * this.speed;
+    this.dy = Math.random() - 0.5 * this.speed;
     this.circle = null;
 
 
@@ -58,19 +58,21 @@ function Circle(x, y, radius, color) {
     this.update = function(circles) {
         // this.detectBoxCollision(circles);
         for (let i = 0; i < circles.length; i++) {
-            if (this === circles[i]) {
-                continue;
-            } else {
+            if (this != circles[i]) {
+
                 let dis = getDistance(this.x, this.y, circles[i].x, circles[i].y);
                 if (dis - 2 * this.radius <= 0) {
-                    // console.log('colided');
+
                     this.dx = -this.dx;
                     this.dy = -this.dy;
                     circles[i].dx = -circles[i].dx;
                     circles[i].dy = -circles[i].dy;
+
+
                 }
 
             }
+
         }
 
         this.detectBoxCollision();
@@ -121,15 +123,17 @@ function Circle(x, y, radius, color) {
 
 /* Randomly generating circles at different position without collision */
 let circles = [];
-let radius = 5;
-let maxX = 800 - radius * 2;
-let maxY = 600 - radius * 2;
+let radius = 50;
+let maxX = boxWidth - radius * 2;
+let maxY = boxHeight - radius * 2;
 let minX = 0;
 let minY = 0;
+let speed = 5;
 
 function init() {
     for (let i = 0; i < 10; i++) {
-        // radius = getRandomFromRange(30, 20);
+        radius = getRandomFromRange(30, 20);
+        speed = getRandomFromRange(2, 10);
         let x = getRandomFromRange(maxX, minX);
         let y = getRandomFromRange(maxY, minY);
 
@@ -144,7 +148,7 @@ function init() {
             }
         }
 
-        circles.push(new Circle(x, y, radius, getRandomColor()));
+        circles.push(new Circle(x, y, radius, getRandomColor(), speed));
         circles[i].draw();
 
     }
