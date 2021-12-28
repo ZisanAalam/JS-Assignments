@@ -7,7 +7,7 @@
 .road {
     border-right: 5px dashed #c8d6e5;
     border-left: 5px dashed #c8d6e5;
-    background-color: black;
+    background-color: rgb(54, 52, 52);
 }
 
 .startScreen {
@@ -19,26 +19,32 @@
     line-height: 2;
     font-size: 30px;
     font-weight: bold;
-    border: 2px solid rgb(133, 76, 76);
+    /* border: 2px solid rgb(133, 76, 76); */
     padding: 20px;
     background-color: rgb(194, 140, 60);
     z-index: 1;
+    box-shadow: 5px 5px 5px #777;
 }
 
 #startBtn {
     padding: 10px;
     font-size: 16px;
     border-radius: 20px;
+    background-color: rgb(129, 88, 88);
+    color: rgb(243, 127, 19);
 }
 
 .scoreBoard {
     position: absolute;
     top: 50px;
     left: 20px;
-    text-align: center;
-    font-size: 30px;
-    border: 1px solid gray;
     padding: 10px;
+    text-align: center;
+    font-size: 25px;
+    background-color: #10ac84;
+    /* border: 1px solid gray; */
+    padding: 10px;
+    box-shadow: 0 5px 5px #777;
 }
 
 .road {
@@ -65,9 +71,21 @@
     width: 50px;
     height: 80px;
     position: absolute;
+    /* background: #49c; */
+    bottom: 50px;
+    /* transition: 0.4s; */
+    background-image: url('images/img1.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.enemyCar {
+    width: 50px;
+    height: 80px;
+    position: absolute;
     background: #49c;
     bottom: 10px;
-    transition: 0.4s;
+    /* transition: 0.4s; */
 }
 
 .car.lane-left {

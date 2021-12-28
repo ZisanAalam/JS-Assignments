@@ -11,6 +11,9 @@ const startBtn = document.getElementById('startBtn');
 const gameArea = document.querySelector('.gameArea');
 const lane = document.querySelector('.lane')
 const scoreBoard = document.querySelector('.scoreBoard');
+const msg = document.querySelector('.msg');
+
+
 
 
 player_car = {
@@ -27,8 +30,19 @@ scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
 
 startBtn.addEventListener('click', () => {
     player_car.status = true;
+    // gameArea.innerHTML = "";
+    // document.querySelectorAll('.car').innerHTML = "";
     // gameArea.classList.remove('hide');
     startScreen.classList.add('hide');
+
+    init();
+    if (startBtn.innerText == "Play Again") {
+        let enCars = document.querySelectorAll('.enemyCar');
+        enCars.forEach((enCar) => {
+            enCar.style.top = getRandomInt(-150, -100) + 'px';
+        })
+    }
+
 
 })
 
@@ -68,7 +82,7 @@ let leftOffset = 25;
 class Obstacle {
     constructor() {
         this.index = getRandomInt(0, 3);
-        this.y = getRandomInt(-150, -70);
+        this.y = getRandomInt(-150, -100);
         this.speed = 5;
         this.x = this.index * 100 + leftOffset;
         this.w = carWidth;
@@ -83,10 +97,12 @@ class Obstacle {
         const laneMapValue = laneMap[this.index];
         //console.log(laneMapValue)
 
-        this.element.setAttribute("class", `car ${laneMapValue}`);
+        this.element.setAttribute("class", `car ${laneMapValue} enemyCar`);
         this.element.style.bottom = "auto";
         this.element.style.top = this.y + "px";
         this.element.style.transition = "none";
+        this.element.style.backgroundImage = `url(images/img${getRandomInt(2,6)}.png)`;
+        // console.log(`url('images/img${getRandomInt(2,6)}.png')`);
 
         road.appendChild(this.element);
     }
@@ -99,8 +115,10 @@ class Obstacle {
             this.element.style.top = this.y + "px";
             for (let i = 0; i < obsArray.length; i++) {
                 if (detectCollison(player_car, obsArray[i])) {
-
                     player_car.status = false;
+                    msg.innerHTML = `Game End <br> Your Score: ${player_car.score}`;
+                    startBtn.innerHTML = 'Play Again';
+                    startScreen.classList.remove('hide');
                     // console.log('colided');
                 }
             }
@@ -111,10 +129,11 @@ class Obstacle {
                 this.index = getRandomInt(0, 3);
                 const laneMapValue = laneMap[this.index];
 
-                this.element.setAttribute("class", `car ${laneMapValue}`);
+                this.element.setAttribute("class", `car ${laneMapValue} enemyCar`);
                 this.x = this.index * 100 + leftOffset;
                 obsArray[this] = this.element;
                 this.y = getRandomInt(-150, -800);
+                this.element.style.backgroundImage = `url('images/img${getRandomInt(2,6)}.png')`
 
             }
         }
@@ -159,13 +178,19 @@ function moveLines() {
     })
 }
 
+let obsArray;
 
-const obsArray = [];
+function init() {
+    player_car.score = 0;
+    scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
 
-for (let i = 0; i < 2; i++) {
-    const obs = new Obstacle();
-    obs.draw();
-    obsArray.push(obs);
+    obsArray = [];
+
+    for (let i = 0; i < 2; i++) {
+        const obs = new Obstacle();
+        obs.draw();
+        obsArray.push(obs);
+    }
 }
 
 function move() {
@@ -177,6 +202,7 @@ function move() {
 
 }
 
+init();
 move();
 
 
