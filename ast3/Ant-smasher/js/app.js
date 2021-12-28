@@ -40,6 +40,16 @@ window.addEventListener('resize', () => {
     init();
 });
 
+let mouse = {
+    x: undefined,
+    y: undefined
+};
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+    // console.log(mouse);
+});
+console.log(mouse.x, mouse.y);
 
 
 function Circle(x, y, radius, color, speed) {
@@ -75,6 +85,14 @@ function Circle(x, y, radius, color, speed) {
 
         }
 
+
+        if (getDistance(mouse.x, mouse.y, this.x, this.y) <= 30) {
+
+            box.removeChild(this.circle);
+        }
+
+
+
         this.detectBoxCollision();
         this.x += this.dx;
         this.y += this.dy;
@@ -83,7 +101,8 @@ function Circle(x, y, radius, color, speed) {
     }
 
     this.draw = function() {
-        let circle = document.createElement('div');
+        let circle = document.createElement('img');
+        circle.src = 'imgs/ant.jfif';
         this.circle = circle;
         circle.style.width = radius * 2 + 'px';
         circle.style.height = radius * 2 + 'px';
@@ -94,6 +113,10 @@ function Circle(x, y, radius, color, speed) {
         circle.style.background = this.color;
         box.appendChild(circle);
     }
+
+    // this.removeObj = function(){
+    //     box.removeChild(this.circle);
+    // }
 
 
     this.detectBoxCollision = function() {
@@ -132,8 +155,8 @@ let speed = 5;
 
 function init() {
     for (let i = 0; i < 10; i++) {
-        radius = getRandomFromRange(30, 20);
-        speed = getRandomFromRange(2, 10);
+        radius = getRandomFromRange(50, 30);
+        speed = getRandomFromRange(10, 2);
         let x = getRandomFromRange(maxX, minX);
         let y = getRandomFromRange(maxY, minY);
 
