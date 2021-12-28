@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Lane Game</title>
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -17,11 +16,16 @@
             <p>Press Start Button To Play</p>
             <button id="startBtn">Start Game</button>
         </div>
-
-        <div class="gameArea hide"></div>
+        <div class="gameArea ">
+            <div class="road" id="road">
+                <div class="lane left"></div>
+                <div class="lane middle"></div>
+                <div class="lane right"></div>
+                <div id="car" class="car lane-middle"></div>
+            </div>
+        </div>
     </div>
-
-    <script src="js/app.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>

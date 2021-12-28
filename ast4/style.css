@@ -1,0 +1,105 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.road {
+    border-right: 5px dashed #c8d6e5;
+    border-left: 5px dashed #c8d6e5;
+    background-color: black;
+}
+
+.startScreen {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    line-height: 2;
+    font-size: 30px;
+    font-weight: bold;
+    border: 2px solid rgb(133, 76, 76);
+    padding: 20px;
+    background-color: rgb(194, 140, 60);
+    z-index: 1;
+}
+
+#startBtn {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.scoreBoard {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    text-align: center;
+    font-size: 30px;
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+.road {
+    width: 300px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
+
+.lane {
+    flex: 1;
+    height: 100vh;
+    /* border: 1px solid black; */
+}
+
+.left,
+.middle,
+.right {
+    border: none;
+}
+
+.car {
+    width: 50px;
+    height: 80px;
+    position: absolute;
+    background: #49c;
+    bottom: 10px;
+    transition: 0.4s;
+}
+
+.car.lane-left {
+    left: 25px;
+}
+
+.car.lane-middle {
+    left: 125px;
+}
+
+.car.lane-right {
+    left: 225px;
+}
+
+.hide {
+    display: none;
+}
+
+.lines,
+.line1 {
+    position: absolute;
+    top: 0;
+    left: 97.5px;
+    height: 100px;
+    width: 5px;
+    background-color: rgb(235, 224, 224);
+}
+
+.line1 {
+    left: 97.5px;
+}
+
+.line2 {
+    left: 190px;
+}
