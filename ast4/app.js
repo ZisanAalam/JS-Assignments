@@ -4,6 +4,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
 
+
 const car = document.getElementById("car");
 const road = document.getElementById("road");
 const startScreen = document.querySelector('.startScreen');
@@ -14,8 +15,7 @@ const scoreBoard = document.querySelector('.scoreBoard');
 const msg = document.querySelector('.msg');
 
 
-
-
+//Initiallizing Player car details
 player_car = {
     x: car.offsetLeft,
     y: car.offsetTop,
@@ -23,18 +23,17 @@ player_car = {
     h: car.clientHeight,
     status: false,
     score: 0,
-    speed: 5
+    speed: 5,
+    speed_factor: 0.25
 }
 
+//Setting initial score board
 scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
 
+//Event linster for start button
 startBtn.addEventListener('click', () => {
     player_car.status = true;
-    // gameArea.innerHTML = "";
-    // document.querySelectorAll('.car').innerHTML = "";
-    // gameArea.classList.remove('hide');
     startScreen.classList.add('hide');
-
     init();
     if (startBtn.innerText == "Play Again") {
         let enCars = document.querySelectorAll('.enemyCar');
@@ -42,8 +41,6 @@ startBtn.addEventListener('click', () => {
             enCar.style.top = getRandomInt(-150, -100) + 'px';
         })
     }
-
-
 })
 
 let index = 1;
@@ -79,16 +76,21 @@ let carWidth = car.clientWidth;
 let carHeight = car.clientHeight;
 let leftOffset = 25;
 // console.log(leftOffset);
+
+
+//index of car that passes without collision
+// since initially no car has passed, so index is set to -1
+let prevIndex = -1;
+let prevY = -2000;
 class Obstacle {
-    constructor() {
-        this.index = getRandomInt(0, 3);
-        this.y = getRandomInt(-150, -100);
-        this.speed = 5;
+    constructor(index, y, speed) {
+        this.index = index;
+        this.y = y;
+        // this.speed = speed;
+        player_car.speed = speed;
         this.x = this.index * 100 + leftOffset;
         this.w = carWidth;
         this.h = carHeight;
-        // console.log(this.x, this.w, this.h);
-
     }
 
     draw() {
@@ -101,20 +103,22 @@ class Obstacle {
         this.element.style.bottom = "auto";
         this.element.style.top = this.y + "px";
         this.element.style.transition = "none";
-        this.element.style.backgroundImage = `url(images/img${getRandomInt(2,6)}.png)`;
         // console.log(`url('images/img${getRandomInt(2,6)}.png')`);
 
         road.appendChild(this.element);
+        this.element.style.backgroundImage = `url(images/img${getRandomInt(2,6)}.png)`;
     }
 
 
     move() {
         if (player_car.status) {
             moveLines();
-            this.y += this.speed;
+            this.y += player_car.speed;
             this.element.style.top = this.y + "px";
             for (let i = 0; i < obsArray.length; i++) {
                 if (detectCollison(player_car, obsArray[i])) {
+
+                    // writeToFile(1, player_car.score);
                     player_car.status = false;
                     msg.innerHTML = `Game End <br> Your Score: ${player_car.score}`;
                     startBtn.innerHTML = 'Play Again';
@@ -124,15 +128,29 @@ class Obstacle {
             }
 
             if (this.y > laneLength) {
+                player_car.speed += player_car.speed_factor;
                 player_car.score++;
                 scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
                 this.index = getRandomInt(0, 3);
-                const laneMapValue = laneMap[this.index];
 
+                //Setting the index if both the car that hase same index
+                for (let i = 0; i < 10; i++) {
+                    if (this.index == prevIndex) {
+                        this.index = getRandomInt(0, 3);
+                    } else {
+                        prevIndex = this.index
+                        break;
+                    }
+                }
+                const laneMapValue = laneMap[this.index];
                 this.element.setAttribute("class", `car ${laneMapValue} enemyCar`);
                 this.x = this.index * 100 + leftOffset;
                 obsArray[this] = this.element;
                 this.y = getRandomInt(-150, -800);
+                if (Math.abs(prevY - this.y) < carHeight) {
+                    this.y -= carHeight;
+                    prevY = this.y;
+                }
                 this.element.style.backgroundImage = `url('images/img${getRandomInt(2,6)}.png')`
 
             }
@@ -145,7 +163,13 @@ class Obstacle {
 
 function detectCollison(rect1, rect2) {
     // console.log(rect1.x, rect1.y, rect2.x, rect2.y);
-    if ((rect2.y + rect2.h) > rect1.y && rect2.x == rect1.x) {
+    // if ((rect2.y + rect2.h) > rect1.y && rect2.x == rect1.x) {
+    //     return true;
+    // }
+    if (rect1.x < rect2.x + rect2.w &&
+        rect1.x + rect1.w > rect2.x &&
+        rect1.y < rect2.y + rect2.h &&
+        rect1.h + rect1.y > rect2.y) {
         return true;
     }
 }
@@ -186,12 +210,23 @@ function init() {
 
     obsArray = [];
 
-    for (let i = 0; i < 2; i++) {
-        const obs = new Obstacle();
-        obs.draw();
+    let index;
+    let y;
+    let x;
+    let speed;
+    let dis;
+    for (let i = 0; i < 3; i++) {
+        index = getRandomInt(0, 3);
+        y = getRandomInt(-150, -100);
+        x = index * 100 + 25;
+        speed = 5;
+        const obs = new Obstacle(index, y, speed);
         obsArray.push(obs);
+        obs.draw();
     }
+
 }
+
 
 function move() {
     obsArray.forEach((obs) =>
@@ -199,23 +234,9 @@ function move() {
     );
 
     requestAnimationFrame(move);
+    // setTimeout(move, 500);
 
 }
 
 init();
 move();
-
-
-// new Game({
-//   keyBindings: {
-//     left: 'ArrowLeft',
-//     right: 'ArrowRight'
-//   }
-// })
-
-// new Game({
-//   keyBindings: {
-//     left: 'A',
-//     right: 'D'
-//   }
-// })
