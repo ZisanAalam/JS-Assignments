@@ -1,10 +1,3 @@
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-}
-
-
 const car = document.getElementById("car");
 const road = document.getElementById("road");
 const startScreen = document.querySelector('.startScreen');
@@ -14,7 +7,8 @@ const lane = document.querySelector('.lane')
 const scoreBoard = document.querySelector('.scoreBoard');
 const msg = document.querySelector('.msg');
 
-
+localStorage.getItem('score', 10);
+console.log(localStorage.getItem('score'));
 //Initiallizing Player car details
 player_car = {
     x: car.offsetLeft,
@@ -68,7 +62,6 @@ document.addEventListener("keydown", (event) => {
         player_car.x = index * 100 + 25;
 
     }
-
 
     const laneMapValue = laneMap[index];
 
