@@ -7,8 +7,7 @@ const lane = document.querySelector('.lane')
 const scoreBoard = document.querySelector('.scoreBoard');
 const msg = document.querySelector('.msg');
 
-localStorage.getItem('score', 10);
-console.log(localStorage.getItem('score'));
+
 //Initiallizing Player car details
 player_car = {
     x: car.offsetLeft,
@@ -124,6 +123,8 @@ class Obstacle {
                     }
                     startBtn.innerHTML = 'Play Again';
                     startScreen.classList.remove('hide');
+
+                    // console.log(localStorage.getItem('score'));
                 }
             }
 
