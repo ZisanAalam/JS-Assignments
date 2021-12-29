@@ -88,7 +88,7 @@
     position: absolute;
     /* background: #49c; */
     bottom: 50px;
-    /* transition: 0.4s; */
+    transition: 0.4s;
     background-image: url('images/img1.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
