@@ -28,7 +28,7 @@ player_car = {
 }
 
 //Setting initial score board
-scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
+// scoreBoard.innerHTML = `High Score : ${leaderBoard.highScore} <hr> Your Score<br>${player_car.score}`;
 
 //Event linster for start button
 startBtn.addEventListener('click', () => {
@@ -53,29 +53,40 @@ const laneMap = {
     1: "lane-middle",
     2: "lane-right"
 };
-
+let rotationAngle = 15;
 document.addEventListener("keydown", (event) => {
     if (event.code === "ArrowLeft") {
         index--;
+        rotationAngle = -15;
         if (index < 0) index = 0;
         player_car.x = index * 100 + 25;
 
     } else if (event.code === "ArrowRight") {
         index++;
+        rotationAngle = 15;
         if (index > laneCount - 1) index = laneCount - 1;
         player_car.x = index * 100 + 25;
 
     }
 
+
     const laneMapValue = laneMap[index];
 
     car.setAttribute("class", `car ${laneMapValue}`);
+    car.style.transform = `rotate(${rotationAngle}deg)`;
+});
+
+document.addEventListener("keyup", (event) => {
+
+    rotationAngle = 0;
+    car.style.transform = `rotate(${rotationAngle}deg)`;
+
+
 });
 
 let carWidth = car.clientWidth;
 let carHeight = car.clientHeight;
 let leftOffset = 25;
-// console.log(leftOffset);
 
 
 //index of car that passes without collision
@@ -86,7 +97,6 @@ class Obstacle {
     constructor(index, y, speed) {
         this.index = index;
         this.y = y;
-        // this.speed = speed;
         player_car.speed = speed;
         this.x = this.index * 100 + leftOffset;
         this.w = carWidth;
@@ -95,16 +105,11 @@ class Obstacle {
 
     draw() {
         this.element = document.createElement("div");
-
         const laneMapValue = laneMap[this.index];
-        //console.log(laneMapValue)
-
         this.element.setAttribute("class", `car ${laneMapValue} enemyCar`);
         this.element.style.bottom = "auto";
         this.element.style.top = this.y + "px";
         this.element.style.transition = "none";
-        // console.log(`url('images/img${getRandomInt(2,6)}.png')`);
-
         road.appendChild(this.element);
         this.element.style.backgroundImage = `url(images/img${getRandomInt(2,6)}.png)`;
     }
@@ -117,8 +122,6 @@ class Obstacle {
             this.element.style.top = this.y + "px";
             for (let i = 0; i < obsArray.length; i++) {
                 if (detectCollison(player_car, obsArray[i])) {
-
-                    // writeToFile(1, player_car.score);
                     player_car.status = false;
                     if (isHighScore(player_car.score)) {
                         leaderBoard.highScore = player_car.score;
@@ -128,17 +131,15 @@ class Obstacle {
                     }
                     startBtn.innerHTML = 'Play Again';
                     startScreen.classList.remove('hide');
-                    // console.log('colided');
                 }
             }
 
             if (this.y > laneLength) {
                 player_car.speed += player_car.speed_factor;
                 player_car.score++;
-                scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
+                scoreBoard.innerHTML = `<p>High Score : ${leaderBoard.highScore}<p> <hr> Your Score<br>${player_car.score}`;
                 this.index = getRandomInt(0, 3);
 
-                //Setting the index if both the car that hase same index
                 for (let i = 0; i < 10; i++) {
                     if (this.index == prevIndex) {
                         this.index = getRandomInt(0, 3);
@@ -167,10 +168,6 @@ class Obstacle {
 }
 
 function detectCollison(rect1, rect2) {
-    // console.log(rect1.x, rect1.y, rect2.x, rect2.y);
-    // if ((rect2.y + rect2.h) > rect1.y && rect2.x == rect1.x) {
-    //     return true;
-    // }
     if (rect1.x < rect2.x + rect2.w &&
         rect1.x + rect1.w > rect2.x &&
         rect1.y < rect2.y + rect2.h &&
@@ -197,7 +194,6 @@ for (let i = 0; i < 7; i++) {
 function moveLines() {
     let lines = document.querySelectorAll('.lines');
     lines.forEach((line) => {
-        // line.y += player_car.speed;
         if (line.y > 800) {
             line.y -= 850;
         }
@@ -211,7 +207,8 @@ let obsArray;
 
 function init() {
     player_car.score = 0;
-    scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
+    // scoreBoard.innerHTML = `Your Score<br>${player_car.score}`;
+    scoreBoard.innerHTML = `<p>High Score : ${leaderBoard.highScore}<p> <hr> Your Score<br>${player_car.score}`;
 
     obsArray = [];
 
@@ -220,7 +217,7 @@ function init() {
     let x;
     let speed;
     let dis;
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         index = getRandomInt(0, 3);
         y = getRandomInt(-150, -100);
         x = index * 100 + 25;

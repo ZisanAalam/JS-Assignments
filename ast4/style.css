@@ -44,13 +44,22 @@
     position: absolute;
     top: 50px;
     left: 20px;
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     font-size: 25px;
     background-color: #10ac84;
     /* border: 1px solid gray; */
     padding: 10px;
     box-shadow: 0 5px 5px #777;
+}
+
+.scoreBoard p {
+    font-size: 20px;
+    color: rgb(180, 75, 36);
+}
+
+.scoreBoard hr {
+    margin: 2px 0;
 }
 
 .road {
