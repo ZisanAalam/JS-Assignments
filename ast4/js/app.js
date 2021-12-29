@@ -120,7 +120,12 @@ class Obstacle {
 
                     // writeToFile(1, player_car.score);
                     player_car.status = false;
-                    msg.innerHTML = `Game End <br> Your Score: ${player_car.score}`;
+                    if (isHighScore(player_car.score)) {
+                        leaderBoard.highScore = player_car.score;
+                        msg.innerHTML = `Game End <br> New High Score: ${player_car.score}`;
+                    } else {
+                        msg.innerHTML = `Game End <br> Your Score: ${player_car.score}`;
+                    }
                     startBtn.innerHTML = 'Play Again';
                     startScreen.classList.remove('hide');
                     // console.log('colided');
