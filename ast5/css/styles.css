@@ -1,22 +1,134 @@
+.hide {
+    display: none;
+}
+
 .gameArea {
-    margin: 50px auto;
-    width: 600px;
+    margin: 60px auto;
+    width: 500px;
     height: 600px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     background-image: url('../images/bg1.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
+    overflow: hidden;
+    box-shadow: 5px 5px 5px #777;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.scoreBoard {
+    position: absolute;
+    /* top: -100px; */
+    top: 10px;
+    height: 50px;
+    left: 50%;
+    width: 500px;
+    transform: translateX(-50%);
+    /* border: 1px solid blue; */
+    background-color: rgb(123, 149, 161);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.startScreen {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    line-height: 2;
+    font-size: 30px;
+    font-weight: bold;
+    /* border: 2px solid rgb(133, 76, 76); */
+    padding: 20px;
+    /* background-color: rgb(185, 194, 60); */
+    z-index: 1;
+    box-shadow: 5px 5px 5px #777;
+    background-color: rgb(129, 123, 123);
+    border-radius: 20px;
+}
+
+.startScreen p {
+    height: 50px;
+    width: 300px;
+    background-image: url('../images/get_ready.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.startScreen.end p {
+    height: 50px;
+    width: 300px;
+    background-image: url('../images/end.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.startBtn {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 20px;
+    height: 80px;
+    width: 200px;
+    /* background-color: rgb(129, 88, 88);
+    color: rgb(243, 127, 19); */
+    background-image: url('../images/ready_btn.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.startBtn.btn {
+    background-image: url('../images/replaay.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.ground {
+    position: absolute;
+    bottom: 0px;
+    width: 150%;
+    height: 100px;
+    left: -5px;
+    background-image: url('../images/ground.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index: 1;
 }
 
 .gameArea .bird {
     position: absolute;
     height: 50px;
     width: 50px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     background-image: url('../images/bird1.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     top: 250px;
     left: 100px;
+}
+
+.obstracleBottom {
+    width: 50px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    /* background-color: blue */
+    background-image: url('../images/pillar2.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.obstracleTop {
+    width: 50px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    /* background-color: blue */
+    background-image: url('../images/pillar1.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
