@@ -15,6 +15,7 @@ let gameAreaHeight = gameArea.clientHeight;
 let groundHeight = ground.clientHeight;
 let groundTop = gameAreaHeight - groundHeight;
 
+//bird position values
 let birdHeight = bird.clientHeight;
 let birdWidth = bird.clientWidth;
 let birdLeft = bird.offsetLeft;
@@ -44,9 +45,8 @@ document.addEventListener("keyup", (event) => {
 
 
 
-
-
-
+// Bird Class
+//initial bird image index
 let index = 1;
 class Bird {
     constructor() {
@@ -174,7 +174,6 @@ function moveBackground() {
 
 let birdObj;
 let ob;
-
 
 function startGame() {
     startScreen.classList.add('hide');
