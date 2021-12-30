@@ -7,6 +7,7 @@ const scoreBoard = document.querySelector('.scoreBoard');
 
 let score = 0;
 let highScore = 0;
+let bgSpeed = 0;
 
 // game box hieigh and width
 let gameAreaWidth = gameArea.clientWidth;
@@ -82,8 +83,9 @@ class Obstacle {
     constructor() {
         this.obsRight = 0;
         this.obsHeight = 0;
-        this.gap = 100;
-        this.speed = 5;
+        this.gap = 150;
+        this.speed = 2;
+        bgSpeed = this.speed;
 
     }
 
@@ -97,7 +99,7 @@ class Obstacle {
         this.obsTop.setAttribute("class", 'obstracleTop');
 
         this.obs.style.height = this.obsHeight + 'px';
-        this.obsTop.style.height = (gameAreaHeight - groundHeight - this.obsHeight - this.gap) + 'px';
+        this.obsTop.style.height = (gameAreaHeight - this.obsHeight - this.gap) + 'px';
 
         this.obs.style.right = '-60px';
         this.obsTop.style.right = '-60px';
@@ -115,7 +117,7 @@ class Obstacle {
         }
 
         if (this.obs.offsetLeft > birdLeft && this.obs.offsetLeft < birdLeft + birdWidth) {
-            if (bird.offsetTop + birdHeight > gameAreaHeight - this.obsHeight - 5 || bird.offsetTop < this.obsTop.clientHeight) {
+            if (bird.offsetTop + birdHeight > gameAreaHeight - this.obsHeight || bird.offsetTop < this.obsTop.clientHeight) {
                 this.resetChild();
                 gameOver();
             }
@@ -124,11 +126,12 @@ class Obstacle {
         if (parseInt(this.obs.style.right) >= gameAreaWidth) {
             this.obsHeight = getRandomInt(150, 300);
             this.obs.style.height = this.obsHeight + 'px';
-            this.obsTop.style.height = (gameAreaHeight - groundHeight - this.obsHeight - this.gap) + 'px';
+            this.obsTop.style.height = (gameAreaHeight - this.obsHeight - this.gap) + 'px';
             this.obs.style.right = '-50px';
             this.obsTop.style.right = '-50px';
             score += 1;
             this.speed += 0.25;
+            bgSpeed = this.speed;
 
         } else {
             this.obs.style.right = parseInt(`${this.obs.style.right}`) + this.speed + "px";
@@ -158,6 +161,17 @@ function gameOver() {
 
 }
 
+let groundLeft = ground.offsetLeft;
+
+function moveBackground() {
+    ground.style.left = groundLeft - 5 + 'px';
+    groundLeft = groundLeft - bgSpeed;
+    if (groundLeft <= -300) {
+        groundLeft = -5;
+    }
+    console.log(ground.offsetLeft);
+}
+
 
 let birdObj;
 let ob;
@@ -180,19 +194,10 @@ function playGame() {
         birdObj.flap();
         birdObj.move();
         ob.move();
+        moveBackground();
 
-        // requestAnimationFrame(playGame);
+        requestAnimationFrame(playGame);
 
     }
 
 }
-setInterval(playGame, 20)
-
-
-
-// timer = setInterval(() => {
-//     birdObj.flap();
-//     ob.move();
-//     birdObj.move();
-//     // birdObj.fall();
-// }, 1000 / 60);
