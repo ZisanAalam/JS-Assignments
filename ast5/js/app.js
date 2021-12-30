@@ -18,7 +18,6 @@ let birdHeight = bird.clientHeight;
 let birdWidth = bird.clientWidth;
 let birdLeft = bird.offsetLeft;
 let birdTop = bird.offsetTop;
-// console.log(birdTop)
 
 
 // player statu;
@@ -32,13 +31,11 @@ document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
         event.preventDefault();
         key_status = true;
-        // bird.style.top = parseInt(`${bird.style.top}`) - 50 + "px";
     }
 });
 document.addEventListener("keyup", (event) => {
     if (event.code === "Space") {
         event.preventDefault();
-        // bird.style.top = parseInt(`${bird.style.top}`) + 1 + "px";
         key_status = false;
     }
 });
@@ -60,13 +57,10 @@ class Bird {
     flap() {
         bird.style.backgroundImage = `url(images/bird${index}.png)`;
         index = ((index + 1) % 3) + 1;
-        //bird.style.top = 250 + 'px';
     }
     move() {
         if (bird.offsetTop + bird.clientHeight >= groundTop - 5 || bird.offsetTop <= 0) {
-            player_status = false;
             gameOver();
-            // console.log(ob.children[0]);
         }
         if (key_status) {
             bird.style.transform = 'rotate(-15deg)';
@@ -79,10 +73,6 @@ class Bird {
             }
         }
         bird.style.top = parseInt(`${bird.style.top}`) + this.speed + "px";
-
-
-
-        // console.log(bird.offsetTop);
     }
 
 
@@ -108,14 +98,12 @@ class Obstacle {
 
         this.obs.style.height = this.obsHeight + 'px';
         this.obsTop.style.height = (gameAreaHeight - groundHeight - this.obsHeight - this.gap) + 'px';
-        // this.obsTop.style.height = '100px';
 
         this.obs.style.right = '-60px';
         this.obsTop.style.right = '-60px';
 
         gameArea.appendChild(this.obs);
         gameArea.appendChild(this.obsTop);
-        // console.log(this.obsTop.style.right);
 
     }
 
@@ -128,29 +116,26 @@ class Obstacle {
 
         if (this.obs.offsetLeft > birdLeft && this.obs.offsetLeft < birdLeft + birdWidth) {
             if (bird.offsetTop + birdHeight > gameAreaHeight - this.obsHeight - 5 || bird.offsetTop < this.obsTop.clientHeight) {
-                player_status = false;
                 this.resetChild();
                 gameOver();
             }
         }
+
         if (parseInt(this.obs.style.right) >= gameAreaWidth) {
             this.obsHeight = getRandomInt(150, 300);
             this.obs.style.height = this.obsHeight + 'px';
             this.obsTop.style.height = (gameAreaHeight - groundHeight - this.obsHeight - this.gap) + 'px';
             this.obs.style.right = '-50px';
             this.obsTop.style.right = '-50px';
-            score++;
+            score += 1;
             this.speed += 0.25;
-            scoreBoard.innerHTML = `<p>High Score : ${highScore} <br> Your Score<br>${score}</p>`;
-            // this.draw();
-            // this.resetChild();
 
         } else {
             this.obs.style.right = parseInt(`${this.obs.style.right}`) + this.speed + "px";
             this.obsTop.style.right = parseInt(`${this.obsTop.style.right}`) + this.speed + "px";
 
         }
-
+        scoreBoard.innerHTML = `<p>High Score : ${highScore} <br> Your Score:${score}</p>`;
 
     }
     resetChild() {
@@ -161,12 +146,17 @@ class Obstacle {
 }
 
 function gameOver() {
+    player_status = false;
     startScreen.classList.remove('hide');
     startScreen.classList.add('end');
     btn.classList.add('btn');
+    if (score > highScore) {
+        highScore = score;
+    }
+
+    score = 0;
 
 }
-// console
 
 
 let birdObj;
@@ -174,7 +164,6 @@ let ob;
 
 
 function startGame() {
-    scoreBoard.innerHTML = `<p>High Score : ${highScore} <br> Your Score:${score}</p>`;
     startScreen.classList.add('hide');
     player_status = true;
     birdObj = new Bird();
