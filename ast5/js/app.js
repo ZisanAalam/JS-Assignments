@@ -169,7 +169,6 @@ function moveBackground() {
     if (groundLeft <= -300) {
         groundLeft = -5;
     }
-    console.log(ground.offsetLeft);
 }
 
 
